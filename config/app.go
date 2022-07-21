@@ -16,7 +16,7 @@ import (
 
 func OpenConnection() *gorm.DB{
 
-	ssl := "required"
+	ssl := "require"
 	env := os.Getenv("env")
 	if env != "production" {
 		ssl = "disable"
