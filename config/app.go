@@ -7,7 +7,6 @@ import (
 	"github.com/nvlhnn/go-plesir/database/seeders"
 	"github.com/nvlhnn/go-plesir/model/domain"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -16,10 +15,10 @@ import (
 
 func OpenConnection() *gorm.DB{
 
-	err := godotenv.Load()
-	if err != nil {
-		panic("failed to load env file")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	panic("failed to load env file")
+	// }
 
 	dbUser := os.Getenv("DB_USER")
 	dbPass := os.Getenv("DB_PASS")
