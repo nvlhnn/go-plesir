@@ -57,7 +57,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8000"
+		port = "3000"
 	}
 	
 	r.Run(":" + port) // listen and serve on 0.0.0.0:8080
