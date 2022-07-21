@@ -9,8 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-
-
+// test
 func main() {
 	
 	var db  *gorm.DB   = config.OpenConnection()
