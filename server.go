@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/nvlhnn/go-plesir/config"
 	"github.com/nvlhnn/go-plesir/middleware"
 	"github.com/nvlhnn/go-plesir/routes"
@@ -52,5 +54,11 @@ func main() {
 			"message": "ping",
 		})
 	})
-	r.Run() // listen and serve on 0.0.0.0:8080
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
+	
+	r.Run(":" + port) // listen and serve on 0.0.0.0:8080
 }
