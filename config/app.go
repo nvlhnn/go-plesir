@@ -52,6 +52,8 @@ func OpenConnection() *gorm.DB{
 		seed = false
 	}
 
+	log.Println(seed)
+
 
 	if seed {
 		err = db.Migrator().DropTable(&domain.Place{}, &domain.PlaceDays{}, &domain.Order{})
