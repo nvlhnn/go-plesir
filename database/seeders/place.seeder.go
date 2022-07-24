@@ -52,6 +52,7 @@ func getResponse(url string) []domain.Place {
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Println("migrate failed")
+		log.Println(err)
 		return nil
 	}
 
@@ -59,6 +60,8 @@ func getResponse(url string) []domain.Place {
 	body, err := io.ReadAll(resp.Body)	
 	if err != nil {
 		log.Println("migrate failed")
+		log.Println(err)
+
 		return nil
 	}
 
@@ -93,6 +96,7 @@ func getResponse(url string) []domain.Place {
 
 	if err != nil {		
 		log.Println("migrate failed")
+		log.Println(err)
 		return nil
 	}else{
 		for _, v := range res.Data.Place {		
