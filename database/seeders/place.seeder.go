@@ -2,7 +2,6 @@ package seeders
 
 import (
 	"encoding/json"
-	"io"
 	"log"
 	"math/rand"
 	"net/http"
@@ -29,10 +28,12 @@ func PlaceSeed(db *gorm.DB){
 		// }
 
 		var places []domain.Place
-		iterator := [20]uint{}
+		var myClient = &http.Client{Timeout: 10 * time.Second}
+
+		iterator := [1]uint{}
 		for index, _ := range iterator {
 			url := "https://www.tiket.com/to-do/api/filtered-products?startingPriceInCentsFrom=0&pageNumber="+strconv.Itoa(index+1)+"&sortAttributes=popularityScore&sortDirection=DESC&pageSize=50&excludes=operationalHours%2Csections%2Cfeatures%2Cpackages&productCategoryCodes=ATTRACTION&lang=id"
-			res := getResponse(url)
+			res := getResponse(url, myClient)
 			places = append(places, res...)
 		}
 
@@ -48,23 +49,25 @@ func PlaceSeed(db *gorm.DB){
 }
 
 
-func getResponse(url string) []domain.Place {
+func getResponse(url string,  myClient *http.Client) []domain.Place {
 	log.Println(url)
-	resp, err := http.Get(url)
+	resp, err := myClient.Get(url)
 	if err != nil {
 		log.Println("migrate failed on get")
 		log.Println(err)
 		return nil
 	}
 
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)	
-	if err != nil {
-		log.Println("migrate failed on read")
-		log.Println(err)
+	// log.Println()
 
-		return nil
-	}
+	defer resp.Body.Close()
+	// body, err := io.ReadAll(resp.Body)	
+	// if err != nil {
+	// 	log.Println("migrate failed on read")
+	// 	log.Println(err)
+
+	// 	return nil
+	// }
 
 	type Img struct {
 		Img string `json:"medium"`
@@ -90,11 +93,13 @@ func getResponse(url string) []domain.Place {
 		Data data `json:"data"` 
 	}
 
-	time.Sleep(20 * time.Second)
+	time.Sleep(5 * time.Second)
 	var res response
 
+
 	// log.Println(body)
-	err = json.Unmarshal(body, &res)
+	// err = json.Unmarshal(body, &res)
+	err = json.NewDecoder(resp.Body).Decode(&res)
 
 	var places []domain.Place			
 
