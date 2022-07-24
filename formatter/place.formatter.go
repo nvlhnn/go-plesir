@@ -1,12 +1,13 @@
 package formatter
 
 import (
-	"encoding/json"
-	"github.com/nvlhnn/go-plesir/model/domain"
-	"github.com/nvlhnn/go-plesir/model/dto"
 	"log"
 	"math/rand"
 	"strconv"
+
+	"github.com/lib/pq"
+	"github.com/nvlhnn/go-plesir/model/domain"
+	"github.com/nvlhnn/go-plesir/model/dto"
 
 	"github.com/gosimple/slug"
 )
@@ -14,10 +15,10 @@ import (
 func ToPlaceResponse(place domain.Place) dto.PlaceResponseDTO {
 
 	var urls []string
-	err := json.Unmarshal(place.Images, &urls)
-	if err != nil {
-		log.Println(err)
-	}
+	// err := json.Unmarshal(place.Images, &urls)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 	log.Println(urls)
 
 	workDays := []dto.Work{}
@@ -42,12 +43,13 @@ func ToPlaceResponse(place domain.Place) dto.PlaceResponseDTO {
 			Email: place.Manager.Email,
 		},
 		WorkDays: workDays,
-		Images: urls,
+		Images: place.Images,
 		Slug: place.Slug,
+		Region: place.Region,
 	}
 }
 
-func ToPlaceModel(p dto.PlaceCreateDTO, urls []byte) domain.Place {
+func ToPlaceModel(p dto.PlaceCreateDTO, urls []string) domain.Place {
 
 
 	workDays := []domain.PlaceDays{}
@@ -70,8 +72,9 @@ func ToPlaceModel(p dto.PlaceCreateDTO, urls []byte) domain.Place {
 		Price: p.Price,
 		UserID: p.UserID,
 		PlaceDays: workDays,
-		Images: urls,
+		Images: pq.StringArray(urls) ,
 		Slug: slug,
+		Region: p.Region,
 	}
 
 	return place

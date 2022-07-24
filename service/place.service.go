@@ -1,13 +1,13 @@
 package service
 
 import (
-	"encoding/json"
+	"net/url"
+
 	"github.com/nvlhnn/go-plesir/formatter"
 	"github.com/nvlhnn/go-plesir/model/domain"
 	"github.com/nvlhnn/go-plesir/model/dto"
 	"github.com/nvlhnn/go-plesir/repository"
 	"github.com/nvlhnn/go-plesir/schemas"
-	"net/url"
 
 	"github.com/gin-gonic/gin"
 )
@@ -48,8 +48,9 @@ func (s *placeService) Create(ctx *gin.Context, p dto.PlaceCreateDTO) (dto.Place
 
 	urls := s.cloudinaryService.UploadImages(ctx, p.Images)
 
-	urlJSON, _ := json.Marshal(urls)
-	place := formatter.ToPlaceModel(p, urlJSON)
+	// urlJSON, _ := json.Marshal(urls)
+	
+	place := formatter.ToPlaceModel(p, urls)
 
 	res, err := s.placeRepository.Save(place)
 	if err.Error != nil {

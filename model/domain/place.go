@@ -1,14 +1,18 @@
 package domain
 
-import "gorm.io/gorm"
+import (
+	"github.com/lib/pq"
+	"gorm.io/gorm"
+)
 
 type Place struct {
 	gorm.Model
 	Name        string `gorm:"type:varchar(255);not null" json:"name"`
+	Region        string `gorm:"type:varchar(255);not null" json:"region"`
 	Description string `gorm:"type:text;not null" json:"description"`
 	Slug		string `gorm:"type:varchar(255);not null" json:"slug"`	 
 	Price       float32 `gorm:"type:decimal(18,2);not null" json:"price"`
-	Images      []byte `gorm:"type:JSON;not null" json:"images"`
+	Images      pq.StringArray `gorm:"type:varchar(255)[];not null" json:"images"`
 	UserID      uint `gorm:"not null" json:"-"`
 	Manager     User   `gorm:"foreignkey:UserID;constraint:onUpdate:CASCADE,onDelete:CASCADE" json:"manager"`
 	// Days   		[]Day  `gorm:"many2many:place_days" `

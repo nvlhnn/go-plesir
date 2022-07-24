@@ -110,6 +110,7 @@ func (r *placeRepository) FindAll (query url.Values) ([]domain.Place, schemas.Sc
 	if val, ok := query["page"]; ok {
 		page, _ := strconv.Atoi(val[0])
 		offset := (page - 1) * 12
+		log.Println(offset)
 		tx.Limit(12).Offset(offset)
 	}
 		

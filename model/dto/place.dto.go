@@ -9,6 +9,7 @@ type PlaceCreateDTO struct {
 	UserID      uint    `form:"user_id" json:"user_id,omitempty" binding:"required,numeric"`
 	WorkDays    []Work  `form:"work_days" json:"work_days"`
 	Images      []multipart.FileHeader `form:"images" binding:"required"`
+	Region      string  `form:"region" json:"region" binding:"required"`
 }
 
 type PlaceUpdateDTO struct {
@@ -28,6 +29,7 @@ type PlaceResponseDTO struct {
 	WorkDays    []Work  `json:"work_days"`
 	Images		[]string `json:"images"`
 	Slug		string	 `json:"slug"`
+	Region	    string `json:"region"`
 }
 
 type Manager struct {

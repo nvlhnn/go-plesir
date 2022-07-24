@@ -2,11 +2,15 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 	"github.com/nvlhnn/go-plesir/database/seeders"
 	"github.com/nvlhnn/go-plesir/model/domain"
+
+	// "github.com/ydhnwb/golang_api/entity"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -43,12 +47,30 @@ func OpenConnection() *gorm.DB{
 	fmt.Println("migrating...")
 
 	
+	seed, err := strconv.ParseBool(os.Getenv("SEEDING"))
+	if err != nil {
+		seed = false
+	}
+
+
+	if seed {
+		err = db.Migrator().DropTable(&domain.Place{}, &domain.PlaceDays{}, &domain.Order{})
+		if err != nil {
+			log.Panicln(err)
+		}
+	}
+
+	
+	
 	err = db.AutoMigrate(&domain.User{}, &domain.Place{}, &domain.Day{}, &domain.PlaceDays{}, &domain.Order{})
 
 	if err == nil {
 		seeders.SeedDay(db)  
+		if seed {
+			seeders.PlaceSeed(db)				
+		}
 	}
-	// db.AutoMigrate(&domain.User{}, &domain.Place{}, &domain.Day{})
+	db.AutoMigrate(&domain.User{}, &domain.Place{}, &domain.Day{})
 	// db.SetupJoinTable(&domain.Place{}, "Days", &domain.PlaceDays{})
 
 	// db.AutoMigrate(&entity.Book{}, &entity.User{})
