@@ -51,7 +51,7 @@ func getResponse(url string) []domain.Place {
 	log.Println(url)
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Println("migrate failed")
+		log.Println("migrate failed on get")
 		log.Println(err)
 		return nil
 	}
@@ -59,7 +59,7 @@ func getResponse(url string) []domain.Place {
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)	
 	if err != nil {
-		log.Println("migrate failed")
+		log.Println("migrate failed on read")
 		log.Println(err)
 
 		return nil
@@ -95,8 +95,13 @@ func getResponse(url string) []domain.Place {
 	var places []domain.Place			
 
 	if err != nil {		
-		log.Println("migrate failed")
+		log.Println("migrate failed on unmarshal")
 		log.Println(err)
+		log.Printf("error decoding sakura response: %v", err)
+		if e, ok := err.(*json.SyntaxError); ok {
+			log.Printf("syntax error at byte offset %d", e.Offset)
+		}
+		log.Printf("sakura response: %q", res)
 		return nil
 	}else{
 		for _, v := range res.Data.Place {		
