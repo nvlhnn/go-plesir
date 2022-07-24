@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gosimple/slug"
 	"github.com/lib/pq"
@@ -89,7 +90,10 @@ func getResponse(url string) []domain.Place {
 		Data data `json:"data"` 
 	}
 
+	time.Sleep(20 * time.Second)
 	var res response
+
+	// log.Println(body)
 	err = json.Unmarshal(body, &res)
 
 	var places []domain.Place			
