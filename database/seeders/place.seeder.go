@@ -30,7 +30,7 @@ func PlaceSeed(db *gorm.DB){
 		var places []domain.Place
 		var myClient = &http.Client{Timeout: 10 * time.Second}
 
-		iterator := [1]uint{}
+		iterator := [20]uint{}
 		for index, _ := range iterator {
 			url := "https://www.tiket.com/to-do/api/filtered-products?startingPriceInCentsFrom=0&pageNumber="+strconv.Itoa(index+1)+"&sortAttributes=popularityScore&sortDirection=DESC&pageSize=50&excludes=operationalHours%2Csections%2Cfeatures%2Cpackages&productCategoryCodes=ATTRACTION&lang=id"
 			res := getResponse(url, myClient)

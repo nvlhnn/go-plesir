@@ -65,7 +65,7 @@ func (r *placeRepository) FindAll (query url.Values) ([]domain.Place, schemas.Sc
 
 	// filter name
 	if val, ok := query["search"]; ok {
-		tx.Where("name LIKE ?", "%"+val[0]+"%")
+		tx.Where("LOWER(name) LIKE ?", "%"+strings.ToLower(val[0])+"%")
 	}
 	
 	// sorting
