@@ -1,9 +1,10 @@
 package service
 
 import (
-	"github.com/nvlhnn/go-plesir/model/domain"
 	"os"
 	"strconv"
+
+	"github.com/nvlhnn/go-plesir/model/domain"
 
 	"github.com/xendit/xendit-go"
 	"github.com/xendit/xendit-go/invoice"
@@ -45,7 +46,7 @@ func (s *xenditService) CreateInvoice(order domain.Order ) (*xendit.Invoice, *xe
 		Quantity:       int(order.Quantity),
 		Price:          float64(order.Place.Price),
 		// Category:       "Electronic",
-		Url:            "http://localhost:5000/places/"+order.Place.Slug,
+		Url:            "https://nuxt-plesir.vercel.app/places/"+order.Place.Slug,
 	}
 	  
 	items := []xendit.InvoiceItem{item}
@@ -73,8 +74,8 @@ func (s *xenditService) CreateInvoice(order domain.Order ) (*xendit.Invoice, *xe
 		InvoiceDuration:    86400,
 		Customer:           customer, 
 		CustomerNotificationPreference:   customerNotificationPreference, 
-		SuccessRedirectURL: "http://localhost:5000/orders/",
-		FailureRedirectURL: "http://localhost:5000/orders/",
+		SuccessRedirectURL: "https://nuxt-plesir.vercel.app/orders/",
+		FailureRedirectURL: "https://nuxt-plesir.vercel.app/orders/",
 		Currency:           "IDR",
 		Items:              items,  
 		Fees:               fees,
