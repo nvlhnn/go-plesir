@@ -1,0 +1,20 @@
+version: '3'
+services:
+  myapp:
+    image: oktav1722/go-plesir:latest
+    environment:
+      - DB_USER=postgres
+      - DB_PASS=11111111
+      - DB_HOST=127.0.0.1
+      - DB_NAME=go_plesir
+      - DB_PORT=5432
+      - JWT_SECRET=jwtsecret
+      - GO111MODULE=on
+      - CLOUDINARY_APP=dvvbkxfno
+      - CLOUDINARY_KEY=466851742511383
+      - CLOUDINARY_SECRET=6KcHjdxbvkJWyGHSAGKl9U5uMQ4
+      - XENDIT_SECRET=xnd_development_b6RxzBrK4n9BSk2W9JLbIVpkL71BzGXa2H7wGaFyEXMgiLtXyWXhEW8mn5ibkUi
+      - ENV=production
+      - SEEDING=false
+    ports:
+      - "8080:8080"

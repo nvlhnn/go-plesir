@@ -59,7 +59,7 @@ func (r *placeRepository) Save (place domain.Place) (domain.Place, schemas.Schem
 
 func (r *placeRepository) FindAll (query url.Values) ([]domain.Place, schemas.SchemaError){
 	results := []domain.Place{}
-	errorResponse := schemas.SchemaError{}
+	errorResponse := schemas.SchemaError{}		
 
 	tx := r.db.Debug().Preload("Manager")
 
@@ -131,7 +131,9 @@ func (r *placeRepository) FindById (id uint) (domain.Place, schemas.SchemaError)
 	errorResponse := schemas.SchemaError{}
 	place := domain.Place{}
 
+
 	res := r.db.Preload("Manager").Preload("PlaceDays.Day").Find(&place, id)
+
 	if(res.Error != nil){
 		errorResponse.Error = res.Error
 		return place, errorResponse
@@ -152,16 +154,21 @@ func (r *placeRepository) FindBySlug (slug string) (domain.Place, schemas.Schema
 	place := domain.Place{}
 
 	res := r.db.Preload("Manager").Preload("PlaceDays.Day").Where("slug = ?", slug).First(&place)
+	
 	if(res.Error != nil){
+		log.Println(res.Error.Error())
+
+		if res.Error.Error() == "record not found" && res.RowsAffected == 0 {
+			errorResponse.Error = errors.New("Place not found")
+			errorResponse.Code = http.StatusNotFound
+			return place, errorResponse
+		}
+
 		errorResponse.Error = res.Error
 		return place, errorResponse
 	}
+	
 
-	if res.RowsAffected == 0 {
-		errorResponse.Error = errors.New("Place not found")
-		errorResponse.Code = http.StatusNotFound
-		return place, errorResponse
-	}
 
 	return place, errorResponse
 }

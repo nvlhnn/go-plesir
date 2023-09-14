@@ -2,11 +2,11 @@ package service
 
 import (
 	"fmt"
-	"github.com/nvlhnn/go-plesir/model/domain"
 	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/nvlhnn/go-plesir/model/domain"
 )
 
 type JWTService interface {

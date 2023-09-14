@@ -6,7 +6,6 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/joho/godotenv"
 	"github.com/nvlhnn/go-plesir/database/seeders"
 	"github.com/nvlhnn/go-plesir/model/domain"
 
@@ -21,14 +20,14 @@ import (
 func OpenConnection() *gorm.DB{
 
 	ssl := "require"
-	env := os.Getenv("env")
-	if env != "production" {
-		ssl = "disable"
-		err := godotenv.Load()
-		if err != nil {
-			panic("failed to load env file")
-		}		
-	}
+	// env := os.Getenv("env")
+	// if env != "production" {
+	// 	ssl = "disable"
+	// 	err := godotenv.Load()
+	// 	if err != nil {
+	// 		panic("failed to load env file")
+	// 	}		
+	// }
 
 	dbUser := os.Getenv("DB_USER")
 	dbPass := os.Getenv("DB_PASS")
